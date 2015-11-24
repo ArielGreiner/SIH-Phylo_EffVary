@@ -47,134 +47,58 @@ for(i in 1:length(DispV)){
   Data_storage$MNTD_abund[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]<-mntd(com_data,cophenetic(SIH_data[["phylo",i]]),abundance.weighted = T)
   }
   }
-  
- #average over all of the replicates... 
-
-Data_storage_avg<-data.frame(SR=NA,Biomass=NA,Biomass_CV=NA,PD=NA,MPD_abund=NA,MPD_pa=NA,MNTD_abund=NA,Dispersal=DispV,Scale=rep(c("Local","Regional"),each=length(DispV))) #building the data frame
-
-for(i in 1:length(DispV)){
-	Data_storage_avg$Biomass[Data_storage_avg$Dispersal==DispV[i] & Data_storage_avg$Scale == "Local"]<- mean(Data_storage$Biomass[Data_storage$Dispersal==DispV[i] & Data_storage$Scale == "Local"])
- 	Data_storage_avg$Biomass[Data_storage_avg$Dispersal==DispV[i] & Data_storage_avg$Scale == "Regional"]<- mean(Data_storage$Biomass[Data_storage$Dispersal==DispV[i] & Data_storage$Scale == "Regional"])
-	
-	#calculate species richness at the local and regional scale	
-  Data_storage_avg$SR[Data_storage_avg$Dispersal==DispV[i] & Data_storage_avg$Scale == "Local"] <-mean(Data_storage$SR[Data_storage$Dispersal==DispV[i] & Data_storage$Scale == "Local"]) 
-  
-  Data_storage_avg$SR[Data_storage_avg$Dispersal==DispV[i] & Data_storage_avg$Scale == "Regional"]<-mean(Data_storage$SR[Data_storage$Dispersal==DispV[i] & Data_storage$Scale == "Regional"])
- 
-  #At the local scale...	
-  
-  Data_storage_avg$PD[Data_storage_avg$Dispersal==DispV[i] & Data_storage_avg$Scale == "Local"]<-mean(Data_storage$PD[Data_storage$Dispersal==DispV[i] & Data_storage$Scale == "Local"])
-  
-  Data_storage_avg$MPD_abund[Data_storage_avg$Dispersal==DispV[i] & Data_storage_avg$Scale == "Local"]<-mean(Data_storage$MPD_abund[Data_storage$Dispersal==DispV[i] & Data_storage$Scale == "Local"]) 
-  
-  Data_storage_avg$MPD_pa[Data_storage_avg$Dispersal==DispV[i] & Data_storage_avg$Scale == "Local"]<-mean(Data_storage$MPD_pa[Data_storage$Dispersal==DispV[i] & Data_storage$Scale == "Local"])
-  
-  Data_storage_avg$MNTD_abund[Data_storage_avg$Dispersal==DispV[i] & Data_storage_avg$Scale == "Local"]<-mean(Data_storage$MNTD_abund[Data_storage$Dispersal==DispV[i] & Data_storage$Scale == "Local"])
-  
-  #At the regional scale
-  
-  Data_storage_avg$PD[Data_storage_avg$Dispersal==DispV[i] & Data_storage_avg$Scale == "Regional"]<-mean(Data_storage$PD[Data_storage$Dispersal==DispV[i] & Data_storage$Scale == "Regional"])
-  
-  Data_storage_avg$MPD_abund[Data_storage_avg$Dispersal==DispV[i] & Data_storage_avg$Scale == "Regional"]<-mean(Data_storage$MPD_abund[Data_storage$Dispersal==DispV[i] & Data_storage$Scale == "Regional"])
-  
-  Data_storage_avg$MPD_pa[Data_storage_avg$Dispersal==DispV[i] & Data_storage_avg$Scale == "Regional"]<-mean(Data_storage$MPD_pa[Data_storage$Dispersal==DispV[i] & Data_storage$Scale == "Regional"])
-  
-  Data_storage_avg$MNTD_abund[Data_storage_avg$Dispersal==DispV[i] & Data_storage_avg$Scale == "Regional"]<-mean(Data_storage$MNTD_abund[Data_storage$Dispersal==DispV[i] & Data_storage$Scale == "Regional"])
-  }
-
-#take the s.d. over all of the replicates... 
-
-Data_storage_sd<-data.frame(SR=NA,Biomass=NA,Biomass_CV=NA,PD=NA,MPD_abund=NA,MPD_pa=NA,MNTD_abund=NA,Dispersal=DispV,Scale=rep(c("Local","Regional"),each=length(DispV))) #building the data frame
-
-for(i in 1:length(DispV)){
-	Data_storage_sd$Biomass[Data_storage_sd$Dispersal==DispV[i] & Data_storage_sd$Scale == "Local"]<- sd(Data_storage$Biomass[Data_storage$Dispersal==DispV[i] & Data_storage$Scale == "Local"])
-	
- 	Data_storage_sd$Biomass[Data_storage_sd$Dispersal==DispV[i] & Data_storage_sd$Scale == "Regional"]<- sd(Data_storage$Biomass[Data_storage$Dispersal==DispV[i] & Data_storage$Scale == "Regional"])
-	
-	#calculate species richness at the local and regional scale	
-  Data_storage_sd$SR[Data_storage_sd$Dispersal==DispV[i] & Data_storage_sd$Scale == "Local"] <-sd(Data_storage$SR[Data_storage$Dispersal==DispV[i] & Data_storage$Scale == "Local"]) 
-  
-  Data_storage_sd$SR[Data_storage_sd$Dispersal==DispV[i] & Data_storage_sd$Scale == "Regional"]<-sd(Data_storage$SR[Data_storage$Dispersal==DispV[i] & Data_storage$Scale == "Regional"])
- 
-  #At the local scale...	
-  
-  Data_storage_sd$PD[Data_storage_sd$Dispersal==DispV[i] & Data_storage_sd$Scale == "Local"]<-sd(Data_storage$PD[Data_storage$Dispersal==DispV[i] & Data_storage$Scale == "Local"])
-  
-  Data_storage_sd$MPD_abund[Data_storage_sd$Dispersal==DispV[i] & Data_storage_sd$Scale == "Local"]<-sd(Data_storage$MPD_abund[Data_storage$Dispersal==DispV[i] & Data_storage$Scale == "Local"]) 
-  
-  Data_storage_sd$MPD_pa[Data_storage_sd$Dispersal==DispV[i] & Data_storage_sd$Scale == "Local"]<-sd(Data_storage$MPD_pa[Data_storage$Dispersal==DispV[i] & Data_storage$Scale == "Local"])
-  
-  Data_storage_sd$MNTD_abund[Data_storage_sd$Dispersal==DispV[i] & Data_storage_sd$Scale == "Local"]<-sd(Data_storage$MNTD_abund[Data_storage$Dispersal==DispV[i] & Data_storage$Scale == "Local"])
-  
-  #At the regional scale
-  
-  Data_storage_sd$PD[Data_storage_sd$Dispersal==DispV[i] & Data_storage_sd$Scale == "Regional"]<-sd(Data_storage$PD[Data_storage$Dispersal==DispV[i] & Data_storage$Scale == "Regional"])
-  
-  Data_storage_sd$MPD_abund[Data_storage_sd$Dispersal==DispV[i] & Data_storage_sd$Scale == "Regional"]<-sd(Data_storage$MPD_abund[Data_storage$Dispersal==DispV[i] & Data_storage$Scale == "Regional"])
-  
-  Data_storage_sd$MPD_pa[Data_storage_sd$Dispersal==DispV[i] & Data_storage_sd$Scale == "Regional"]<-sd(Data_storage$MPD_pa[Data_storage$Dispersal==DispV[i] & Data_storage$Scale == "Regional"])
-  
-  Data_storage_sd$MNTD_abund[Data_storage_sd$Dispersal==DispV[i] & Data_storage_sd$Scale == "Regional"]<-sd(Data_storage$MNTD_abund[Data_storage$Dispersal==DispV[i] & Data_storage$Scale == "Regional"])
-  }
-  
  
 Data_storage_total<-summarise(group_by(Data_storage, Dispersal, Scale), Mean_SR=mean(SR,na.rm=T), SD_SR=sd(SR,na.rm=T), Mean_Biomass=mean(Biomass,na.rm=T), SD_Biomass=sd(Biomass,na.rm=T), Mean_PD=mean(PD,na.rm=T), SD_PD=sd(PD,na.rm=T), Mean_MPD_abund=mean(MPD_abund,na.rm=T), SD_MPD_abund=sd(MPD_abund,na.rm=T), Mean_MPD_pa=mean(MPD_pa,na.rm=T), SD_MPD_pa=sd(MPD_pa,na.rm=T), Mean_MNTD_abund=mean(MNTD_abund,na.rm=T), SD_MNTD_abund=sd(MNTD_abund,na.rm=T))
 
-#Doesn't work
-#Data_storage_total<-merge(Data_storage_avg, Data_storage_sd) 
-
-#plot(x = Data_storage_total$Dispersal, y = Data_storage_total$Mean_SR, type ='l', xlab="Dispersal", ylab="Species Richness")
-#arrows(Data_storage_total$Dispersal, Data_storage_total$Mean_SR-Data_storage_total$SD_SR, Data_storage_total$Dispersal, Data_storage_total$Mean_SR+Data_storage_total$SD_SR, length=0.05, angle=90, code=3)
-
-#change geom_errorbar to geom_ribbon to get intervals  
+###need to go to an older version of this to get the geom_errobar variant
 #Plot species richness at different dispersal levels 
 require(ggplot2) #need to define x and y within aes in ggplot
-ggplot(Data_storage_total,aes(x=Dispersal,y=Mean_SR,color=Scale,group=Scale,fill=Scale))+
+ggplot(Data_storage_total,aes(x=Dispersal,y=Mean_SR,color=Scale,group=Scale,fill=Scale,alpha=0.1))+
   geom_line(size=2)+ #plots data as lines
-  geom_errorbar(aes(ymin=Mean_SR-SD_SR,ymax=Mean_SR+SD_SR),width=0.1)+
+  geom_ribbon(aes(ymin=Mean_SR-SD_SR,ymax=Mean_SR+SD_SR),width=0.1)+
   scale_x_log10(breaks=DispV)+ #sets x axis to log10 scale
   theme_bw(base_size = 18)+ #gets rid of grey background
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) #removes grid lines
   
 #Plot phylogenetic diversity at different dispersal levels 
-ggplot(Data_storage_total,aes(x=Dispersal,y=Mean_PD,color=Scale,group=Scale,fill=Scale))+
+ggplot(Data_storage_total,aes(x=Dispersal,y=Mean_PD,color=Scale,group=Scale,fill=Scale,alpha=0.1))+
   geom_line(size=2)+ #plots data as lines
-  geom_errorbar(aes(ymin=Mean_PD-SD_PD,ymax=Mean_PD+SD_PD),width=0.1)+
+  geom_ribbon(aes(ymin=Mean_PD-SD_PD,ymax=Mean_PD+SD_PD),width=0.1)+
   scale_x_log10(breaks=DispV)+ #sets x axis to log10 scale
   theme_bw(base_size = 18)+ #gets rid of grey background
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) #removes grid lines
 
 #MPD_pa may not be robust to reps, need to check
 #Plot mean pairwise distance at different dispersal levels  
-ggplot(Data_storage_total,aes(x=Dispersal,y=Mean_MPD_pa,color=Scale,group=Scale,fill=Scale))+
+ggplot(Data_storage_total,aes(x=Dispersal,y=Mean_MPD_pa,color=Scale,group=Scale,fill=Scale,alpha=0.1))+
   geom_line(size=2,na.rm=T)+ #plots data as lines
-  geom_errorbar(aes(ymin=Mean_MPD_pa-SD_MPD_pa,ymax=Mean_MPD_pa+SD_MPD_pa),width=0.1)+
+  geom_ribbon(aes(ymin=Mean_MPD_pa-SD_MPD_pa,ymax=Mean_MPD_pa+SD_MPD_pa),width=0.1)+
   scale_x_log10(breaks=DispV)+ #sets x axis to log10 scale
   facet_grid(.~Scale)+ #plots local and regional side-by-side 
   theme_bw(base_size = 18)+ #gets rid of grey background
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
 #Plot abundance-weighted mean pairwise distance at different dispersal levels 
-ggplot(Data_storage_total,aes(x=Dispersal,y=Mean_MPD_abund,color=Scale,group=Scale,fill=Scale))+
+ggplot(Data_storage_total,aes(x=Dispersal,y=Mean_MPD_abund,color=Scale,group=Scale,fill=Scale,alpha=0.1))+
   geom_line(size=2,na.rm=T)+ #plots data as lines
-  geom_errorbar(aes(ymin=Mean_MPD_abund-SD_MPD_abund,ymax=Mean_MPD_abund+SD_MPD_abund),width=0.1)+
+  geom_ribbon(aes(ymin=Mean_MPD_abund-SD_MPD_abund,ymax=Mean_MPD_abund+SD_MPD_abund),width=0.1)+
   scale_x_log10(breaks=DispV)+ #sets x axis to log10 scale
   theme_bw(base_size = 18)+ #gets rid of grey background
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) #removes grid lines
 
 #Plot abundance-weighted mean nearest taxon index at different dispersal levels 
-ggplot(Data_storage_total,aes(x=Dispersal,y=Mean_MNTD_abund,color=Scale,group=Scale,fill=Scale))+
+ggplot(Data_storage_total,aes(x=Dispersal,y=Mean_MNTD_abund,color=Scale,group=Scale,fill=Scale,alpha=0.1))+
   geom_line(size=2,na.rm=T)+ #plots data as lines
-  geom_errorbar(aes(ymin=Mean_MNTD_abund-SD_MNTD_abund,ymax=Mean_MNTD_abund+SD_MNTD_abund),width=0.1)+
+  geom_ribbon(aes(ymin=Mean_MNTD_abund-SD_MNTD_abund,ymax=Mean_MNTD_abund+SD_MNTD_abund),width=0.1)+
   facet_grid(.~Scale)+
   scale_x_log10(breaks=DispV)+ #sets x axis to log10 scale
   theme_bw(base_size = 18)+ #gets rid of grey background
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) #removes grid lines
 
 #Plot presence-absence mean pairwise distance at different species richnesses 
-ggplot(Data_storage_total,aes(x=Mean_SR,y=Mean_MPD_pa,color=Scale,group=Scale,fill=Scale))+
+ggplot(Data_storage_total,aes(x=Mean_SR,y=Mean_MPD_pa,color=Scale,group=Scale,fill=Scale,alpha=0.1))+
   geom_line(size=2,na.rm=T)+ #plots data as lines
-  geom_errorbar(aes(ymin=Mean_MPD_pa-SD_MPD_pa,ymax=Mean_MPD_pa+SD_MPD_pa),width=0.1)+
+  geom_ribbon(aes(ymin=Mean_MPD_pa-SD_MPD_pa,ymax=Mean_MPD_pa+SD_MPD_pa),width=0.1)+
   #scale_x_log10(breaks=DispV)+ #sets x axis to log10 scale
   facet_grid(.~Scale)+
   theme_bw(base_size = 18)+ #gets rid of grey background
