@@ -1,6 +1,6 @@
 nspecies<-7 #the number of species
 npatches<-10 #the number of patches
-nreplicates<-5 #number of replicates
+nreplicates<-30 #number of replicates
 nfunctions<-1
 
 DispV<-c(0.0001,0.0005,0.001,0.005,0.01,0.05,0.1,0.5,1) #the dispersal rates 
@@ -11,6 +11,7 @@ MTraits<-t(matrix(1,nspecies,nfunctions))
 
 for(j in 1:nreplicates){
 #runs the SIH model at all dispersal rates in DispV and saves the abundances and productivity in a list
+set.seed(j)
 eff_values<-rnorm(nspecies,mean=0.2,sd=0.005)
 SIH_data<-sapply(DispV,SIH_function,species=nspecies,patches=npatches,eff_vary=T,eff_values=eff_values)
 
@@ -125,12 +126,10 @@ Data_storage_total<-summarise(group_by(Data_storage, Dispersal, Scale), Mean_SR=
 #plot(x = Data_storage_total$Dispersal, y = Data_storage_total$Mean_SR, type ='l', xlab="Dispersal", ylab="Species Richness")
 #arrows(Data_storage_total$Dispersal, Data_storage_total$Mean_SR-Data_storage_total$SD_SR, Data_storage_total$Dispersal, Data_storage_total$Mean_SR+Data_storage_total$SD_SR, length=0.05, angle=90, code=3)
 
-
-
-  
+#change geom_errorbar to geom_ribbon to get intervals  
 #Plot species richness at different dispersal levels 
 require(ggplot2) #need to define x and y within aes in ggplot
-ggplot(Data_storage_total,aes(x=Dispersal,y=Mean_SR,color=Scale,group=Scale))+
+ggplot(Data_storage_total,aes(x=Dispersal,y=Mean_SR,color=Scale,group=Scale,fill=Scale))+
   geom_line(size=2)+ #plots data as lines
   geom_errorbar(aes(ymin=Mean_SR-SD_SR,ymax=Mean_SR+SD_SR),width=0.1)+
   scale_x_log10(breaks=DispV)+ #sets x axis to log10 scale
@@ -138,7 +137,7 @@ ggplot(Data_storage_total,aes(x=Dispersal,y=Mean_SR,color=Scale,group=Scale))+
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) #removes grid lines
   
 #Plot phylogenetic diversity at different dispersal levels 
-ggplot(Data_storage_total,aes(x=Dispersal,y=Mean_PD,color=Scale,group=Scale))+
+ggplot(Data_storage_total,aes(x=Dispersal,y=Mean_PD,color=Scale,group=Scale,fill=Scale))+
   geom_line(size=2)+ #plots data as lines
   geom_errorbar(aes(ymin=Mean_PD-SD_PD,ymax=Mean_PD+SD_PD),width=0.1)+
   scale_x_log10(breaks=DispV)+ #sets x axis to log10 scale
@@ -147,7 +146,7 @@ ggplot(Data_storage_total,aes(x=Dispersal,y=Mean_PD,color=Scale,group=Scale))+
 
 #MPD_pa may not be robust to reps, need to check
 #Plot mean pairwise distance at different dispersal levels  
-ggplot(Data_storage_total,aes(x=Dispersal,y=Mean_MPD_pa,color=Scale,group=Scale))+
+ggplot(Data_storage_total,aes(x=Dispersal,y=Mean_MPD_pa,color=Scale,group=Scale,fill=Scale))+
   geom_line(size=2,na.rm=T)+ #plots data as lines
   geom_errorbar(aes(ymin=Mean_MPD_pa-SD_MPD_pa,ymax=Mean_MPD_pa+SD_MPD_pa),width=0.1)+
   scale_x_log10(breaks=DispV)+ #sets x axis to log10 scale
@@ -156,7 +155,7 @@ ggplot(Data_storage_total,aes(x=Dispersal,y=Mean_MPD_pa,color=Scale,group=Scale)
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
 #Plot abundance-weighted mean pairwise distance at different dispersal levels 
-ggplot(Data_storage_total,aes(x=Dispersal,y=Mean_MPD_abund,color=Scale,group=Scale))+
+ggplot(Data_storage_total,aes(x=Dispersal,y=Mean_MPD_abund,color=Scale,group=Scale,fill=Scale))+
   geom_line(size=2,na.rm=T)+ #plots data as lines
   geom_errorbar(aes(ymin=Mean_MPD_abund-SD_MPD_abund,ymax=Mean_MPD_abund+SD_MPD_abund),width=0.1)+
   scale_x_log10(breaks=DispV)+ #sets x axis to log10 scale
@@ -164,7 +163,7 @@ ggplot(Data_storage_total,aes(x=Dispersal,y=Mean_MPD_abund,color=Scale,group=Sca
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) #removes grid lines
 
 #Plot abundance-weighted mean nearest taxon index at different dispersal levels 
-ggplot(Data_storage_total,aes(x=Dispersal,y=Mean_MNTD_abund,color=Scale,group=Scale))+
+ggplot(Data_storage_total,aes(x=Dispersal,y=Mean_MNTD_abund,color=Scale,group=Scale,fill=Scale))+
   geom_line(size=2,na.rm=T)+ #plots data as lines
   geom_errorbar(aes(ymin=Mean_MNTD_abund-SD_MNTD_abund,ymax=Mean_MNTD_abund+SD_MNTD_abund),width=0.1)+
   facet_grid(.~Scale)+
@@ -173,14 +172,13 @@ ggplot(Data_storage_total,aes(x=Dispersal,y=Mean_MNTD_abund,color=Scale,group=Sc
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) #removes grid lines
 
 #Plot presence-absence mean pairwise distance at different species richnesses 
-ggplot(Data_storage_total,aes(x=Mean_SR,y=Mean_MPD_pa,color=Scale,group=Scale))+
+ggplot(Data_storage_total,aes(x=Mean_SR,y=Mean_MPD_pa,color=Scale,group=Scale,fill=Scale))+
   geom_line(size=2,na.rm=T)+ #plots data as lines
   geom_errorbar(aes(ymin=Mean_MPD_pa-SD_MPD_pa,ymax=Mean_MPD_pa+SD_MPD_pa),width=0.1)+
   #scale_x_log10(breaks=DispV)+ #sets x axis to log10 scale
   facet_grid(.~Scale)+
   theme_bw(base_size = 18)+ #gets rid of grey background
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
-  
   
 #Plot Biomass
 ggplot(Data_storage_total,aes(x=Dispersal,y=Mean_Biomass))+ #defines the variables that you are plotting
@@ -189,6 +187,14 @@ ggplot(Data_storage_total,aes(x=Dispersal,y=Mean_Biomass))+ #defines the variabl
   geom_errorbar(aes(ymin=Mean_Biomass-SD_Biomass,ymax=Mean_Biomass+SD_Biomass),width=0.1)+
   #facet_grid(ReplicateNume~.,scale='free')
   #geom_errorbar(data = Function_rates_sd)+
+  scale_x_log10(breaks=DispV)+ #sets x axis to log10 scale
+  theme_bw(base_size = 18)+ #gets rid of grey background
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) #removes grid lines
+  
+  #Could you produce some plots of PD vs SR (x axis). I curious about how far from linear this relationship deviates. 
+  ggplot(Data_storage_total,aes(x=Mean_SR,y=Mean_PD,color=Scale,group=Scale))+
+  geom_line(size=2)+ #plots data as lines
+  geom_errorbar(aes(ymin=Mean_PD-SD_PD,ymax=Mean_PD+SD_PD),width=0.1)+
   scale_x_log10(breaks=DispV)+ #sets x axis to log10 scale
   theme_bw(base_size = 18)+ #gets rid of grey background
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) #removes grid lines
@@ -214,4 +220,13 @@ for(i in 1:length(DispV)){
   com_data<-t(SIH_data[["Abund",i]][400,,])
   plot(SIH_data[["phylo",i]],show.tip.label = F,main=paste("Dispersal = ",DispV[i]))
   tiplabels(pch=22,bg=heat.colors(nspecies)[1:nspecies], cex=3*com_data[3,]>0)
+}
+
+###Plot 3x3 grid of possible species phylogenies
+H<-seq(0,1,length=9)
+par(mfrow=c(3,3)) #regional phylogenetic tree ##check
+for(i in 1:9){
+  e<-rnorm(nspecies,mean = 0.2,sd=0.005)
+  phylo_e<-plot(hclust(daisy(cbind(H,e)),method ="single"))
+    #mpd(com_data,cophenetic(phylo_e,abundance.weighted = F))
 }
