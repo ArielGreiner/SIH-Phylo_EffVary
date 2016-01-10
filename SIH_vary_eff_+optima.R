@@ -1,3 +1,4 @@
+##ignore this file?
 SIH_function<-function(dispersal=0.001,species=9,patches=30,eff_vary=F,eff_values=NA){ 
 	#can define things here and then don't need to define them below 
   require(cluster)
