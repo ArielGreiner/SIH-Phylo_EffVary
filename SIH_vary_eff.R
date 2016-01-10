@@ -28,7 +28,8 @@ SIH_function<-function(dispersal=0.001,species=9,patches=30,eff_vary=F,eff_value
   eOptimum<-1-seq(0,eAMP, by=eAMP/(species-1)) #species environmental optima
   #eOptimum<-runif(10,min=0,max=1) #AG modif
   
-  phylo<-as.phylo(hclust(daisy(cbind(eOptimum,eff_vary)),method ="ward")) #he had this set to ward.D
+  phylo<-as.phylo(hclust(daisy(cbind(eOptimum,eff_values)),method ="ward"))
+  #phylo<-as.phylo(hclust(daisy(cbind(eOptimum,eff_vary)),method ="ward")) #he had this set to ward.D
   plot(phylo,show.tip.label = F)
   tiplabels(pch=22,bg=heat.colors(species)[1:species]) #heat.colors = white -> red
   
