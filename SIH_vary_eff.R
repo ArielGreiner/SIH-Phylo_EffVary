@@ -25,7 +25,8 @@ SIH_function<-function(dispersal=0.001,species=9,patches=30,eff_vary=F,eff_value
   DT<- 0.08 # % size of discrete "time steps" - this is the Euler value
   
   #vectors####
-  eOptimum<-1-seq(0,eAMP, by=eAMP/(species-1)) #species environmental optima
+  #eOptimum<-1-seq(0,eAMP, by=eAMP/(species-1)) #species environmental optima
+  eOptimum<-runif(10,min=0,max=1) #AG modif
   
   phylo<-as.phylo(hclust(daisy(cbind(eOptimum,eff_vary)),method ="ward")) #he had this set to ward.D
   plot(phylo,show.tip.label = F)
