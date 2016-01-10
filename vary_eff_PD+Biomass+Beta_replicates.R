@@ -38,6 +38,15 @@ for(i in 1:length(DispV)){
   Data_storage$MPD_abund[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]<-mean(mpd(com_data,cophenetic(SIH_data[["phylo",i]]),abundance.weighted = T)) 
   Data_storage$MPD_pa[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]<-mean(mpd(com_data,cophenetic(SIH_data[["phylo",i]]),abundance.weighted = F))
   Data_storage$MNTD_abund[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]<-mean(mntd(com_data,cophenetic(SIH_data[["phylo",i]]),abundance.weighted = T))
+  #beta measures
+  colnames(com_data) <- paste('species', 1:nspecies)
+     interspec_mat <- cophenetic(SIH_data[["phylo",i]])
+     colnames(interspec_mat) <- paste('species', 1:7)
+     rownames(interspec_mat) <- paste('species', 1:7)
+  Data_storage$beta_MPDabund[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"] <- mean(comdist(com_data,interspec_mat,abundance.weighted=TRUE))
+Data_storage$beta_MNTDabund[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"] <- mean(comdistnt(com_data,interspec_mat,abundance.weighted=TRUE,exclude.conspecifics=TRUE))
+#^gives weird warning messages...
+
   #At the regional scale
   com_data<-matrix(colSums(t(SIH_data[["Abund",i]][400,,])),1,nspecies)
   colnames(com_data)<-1:nspecies
@@ -46,22 +55,6 @@ for(i in 1:length(DispV)){
   Data_storage$MPD_pa[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]<-mpd(com_data,cophenetic(SIH_data[["phylo",i]]),abundance.weighted = F)
   Data_storage$MNTD_abund[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]<-mntd(com_data,cophenetic(SIH_data[["phylo",i]]),abundance.weighted = T)  
   }
- ##BETA MEASURES
-commdata_array <- array(data = NA, dim=c(10,7,9))
-for(i in 1:length(DispV)){ #go through all of the dispersal levels
-commdata <- SIH_data[["Abund",i]] #extracts the abundance data at dispersal level i from SIHdata
-commdata_array[,,i] <- t(commdata[400,,]) #creates a community data matrix from the community values at the last time step, rows = patches, columns = species - for all dispersal levels
-commdata_matrix = commdata_array[,,i]
-colnames(commdata_matrix) <- paste('species', 1:nspecies)
-interspec_mat <- cophenetic(SIH_data[["phylo",i]])
-colnames(interspec_mat) <- paste('species', 1:7)
-rownames(interspec_mat) <- paste('species', 1:7)
-Data_storage$beta_MPDabund[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"] <- mean(comdist(commdata_matrix,interspec_mat,abundance.weighted=TRUE))
-
-Data_storage$beta_MNTDabund[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"] <- mean(comdistnt(commdata_matrix,interspec_mat,abundance.weighted=TRUE,exclude.conspecifics=TRUE))
-#^gives weird warning messages...
-}
-
   }
 require(dplyr) 
 Data_storage_total<-summarise(group_by(Data_storage, Dispersal, Scale), Mean_SR=mean(SR,na.rm=T), SD_SR=sd(SR,na.rm=T), Mean_Biomass=mean(Biomass,na.rm=T), SD_Biomass=sd(Biomass,na.rm=T), Mean_PD=mean(PD,na.rm=T), SD_PD=sd(PD,na.rm=T), Mean_MPD_abund=mean(MPD_abund,na.rm=T), SD_MPD_abund=sd(MPD_abund,na.rm=T), Mean_MPD_pa=mean(MPD_pa,na.rm=T), SD_MPD_pa=sd(MPD_pa,na.rm=T), Mean_MNTD_abund=mean(MNTD_abund,na.rm=T), SD_MNTD_abund=sd(MNTD_abund,na.rm=T),Mean_beta_MPDabund=mean(beta_MPDabund,na.rm=T), SD_beta_MPDabund=sd(beta_MPDabund,na.rm=T), 
