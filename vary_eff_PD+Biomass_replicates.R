@@ -1,6 +1,6 @@
 nspecies<-7 #the number of species
 npatches<-10 #the number of patches
-nreplicates<-30 #number of replicates
+nreplicates<-100 #number of replicates
 nfunctions<-1
 
 DispV<-c(0.0001,0.0005,0.001,0.005,0.01,0.05,0.1,0.5,1) #the dispersal rates 
@@ -47,7 +47,7 @@ for(i in 1:length(DispV)){
   Data_storage$MNTD_abund[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]<-mntd(com_data,cophenetic(SIH_data[["phylo",i]]),abundance.weighted = T)
   }
   }
- 
+require(dplyr) 
 Data_storage_total<-summarise(group_by(Data_storage, Dispersal, Scale), Mean_SR=mean(SR,na.rm=T), SD_SR=sd(SR,na.rm=T), Mean_Biomass=mean(Biomass,na.rm=T), SD_Biomass=sd(Biomass,na.rm=T), Mean_PD=mean(PD,na.rm=T), SD_PD=sd(PD,na.rm=T), Mean_MPD_abund=mean(MPD_abund,na.rm=T), SD_MPD_abund=sd(MPD_abund,na.rm=T), Mean_MPD_pa=mean(MPD_pa,na.rm=T), SD_MPD_pa=sd(MPD_pa,na.rm=T), Mean_MNTD_abund=mean(MNTD_abund,na.rm=T), SD_MNTD_abund=sd(MNTD_abund,na.rm=T))
 
 ###need to go to an older version of this to get the geom_errobar variant
@@ -122,7 +122,31 @@ ggplot(Data_storage_total,aes(x=Dispersal,y=Mean_Biomass))+ #defines the variabl
   scale_x_log10(breaks=DispV)+ #sets x axis to log10 scale
   theme_bw(base_size = 18)+ #gets rid of grey background
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) #removes grid lines
+
+#example of how to plot data colour-coded and connected by dispersal
+ggplot(Data_storage_total,aes(x=Mean_SR,y=Mean_Biomass,color=factor(Dispersal),group=Scale))+
+geom_point()+ #plots data as points
+geom_path()+
+facet_grid(Scale~.,scale="free")+
+theme_bw(base_size = 18)+ #gets rid of grey background
+theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+
+#plots data as points with error bars, colour-coded by scale and not by dispersal
+ggplot(Data_storage_total,aes(x=Mean_SR,y=Mean_PD,color=Scale,group=Scale))+
+geom_point()+ #plots data as points
+geom_errorbar(aes(ymin=Mean_PD-SD_PD,ymax=Mean_PD+SD_PD),width=0.1)+
+facet_grid(Scale~.,scale="free")+
+theme_bw(base_size = 18)+ #gets rid of grey background
+theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
   
+ggplot(Data_storage_total,aes(x=Mean_SR,y=Mean_PD,color=factor(Dispersal),group=Scale))+
+geom_point()+ #plots data as points
+geom_path()+
+geom_errorbar(aes(ymin=Mean_PD-SD_PD,ymax=Mean_PD+SD_PD),width=0.1)+
+facet_grid(Scale~.,scale="free")+
+theme_bw(base_size = 18)+ #gets rid of grey background
+theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
+ 
 
 ##THESE SHOULD PROBABLY BE MOVED WITHIN THE FOR-LOOP
 #plot phylo####
