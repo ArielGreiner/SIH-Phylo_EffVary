@@ -38,6 +38,11 @@ for(i in 1:length(DispV)){
   Data_storage$MPD_abund[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]<-mean(mpd(com_data,cophenetic(SIH_data[["phylo",i]]),abundance.weighted = T)) 
   Data_storage$MPD_pa[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]<-mean(mpd(com_data,cophenetic(SIH_data[["phylo",i]]),abundance.weighted = F))
   Data_storage$MNTD_abund[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]<-mean(mntd(com_data,cophenetic(SIH_data[["phylo",i]]),abundance.weighted = T))
+  #ses measures
+Data_storage$sesMPD_abund[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]<-mean(ses.mpd(samp = com_data,dis = cophenetic(SIH_data[["phylo",i]]),null.model = "sample.pool",abundance.weighted = T, runs = 999)$mpd.obs.z)
+
+Data_storage$sesMNTD_abund[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]<-mean(ses.mntd(samp = com_data,dis = cophenetic(SIH_data[["phylo",i]]),null.model = "sample.pool",abundance.weighted = T, runs = 999)$mntd.obs.z)
+
   #beta measures
   colnames(com_data) <- paste('species', 1:nspecies)
      interspec_mat <- cophenetic(SIH_data[["phylo",i]])
@@ -46,11 +51,6 @@ for(i in 1:length(DispV)){
   Data_storage$beta_MPDabund[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"] <- mean(comdist(com_data,interspec_mat,abundance.weighted=TRUE))
 Data_storage$beta_MNTDabund[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"] <- mean(comdistnt(com_data,interspec_mat,abundance.weighted=TRUE,exclude.conspecifics=TRUE))
 #^gives weird warning messages...
-
-#ses measures
-Data_storage$sesMPD_abund[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]<-mean(ses.mpd(samp = com_data,dis = cophenetic(SIH_data[["phylo",i]]),null.model = "sample.pool",abundance.weighted = T, runs = 999)$mpd.obs.z)
-
-Data_storage$sesMNTD_abund[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]<-mean(ses.mntd(samp = com_data,dis = cophenetic(SIH_data[["phylo",i]]),null.model = "sample.pool",abundance.weighted = T, runs = 999)$mntd.obs.z)
 
   #At the regional scale
   com_data<-matrix(colSums(t(SIH_data[["Abund",i]][400,,])),1,nspecies)
