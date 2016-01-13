@@ -35,22 +35,44 @@ require(pez)
 ##comm needs rownames and colnames, is a community data matrix
 ###it's telling me that the community data has no sites in common with the rest of the data...not really sure what to do about that ####:((####
 ##phy needs a phylogeny (in phylo format)
-commdata_array <- array(data = NA, dim=c(10,7,9))
 
+#Phylogenetic Shannon: - sum_i->nspecies ((AEDi/PD)ln(AEDi/PD))
+#Hill's diversity number of order a: (sum_i((AEDi/PD)^a))^(1/(1-a))
+##...I think? I substituted p_i for AEDi/PD as was done in the Shannon formula
+
+##need to run the full model before running the code below
+a = 2 #inverse of Gini-Simpson or something
+commdata_array <- array(data = NA, dim=c(npatches,nspecies,length(DispV))) 
+#phlgshannon_alpha <- rep(NA,npatches)
+phlgshannon_alpha <- matrix(data = rep(0,npatches*length(DispV)), nrow = npatches, ncol = length(DispV))
+shannonhillnum <- matrix(data = rep(0,npatches*length(DispV)), nrow = npatches, ncol = length(DispV))
+generalhillnum <- matrix(data = rep(0,npatches*length(DispV)), nrow = npatches, ncol = length(DispV))
 for(i in 1:length(DispV)){ #go through all of the dispersal levels
 commdata <- SIH_data[["Abund",i]] #extracts the abundance data at dispersal level i from SIHdata
 commdata_array[,,i] <- t(commdata[400,,]) #creates a community data matrix from the community values at the last time step, rows = patches, columns = species - for all dispersal levels
 commdata_matrix = commdata_array[,,i]
 rownames(commdata_matrix) <- paste('patch',1:10)
 colnames(commdata_matrix) <- paste('species', 1:nspecies)
-comparative.comm(SIH_data[["phylo",i]],commdata_matrix)
+SIH_data[["phylo",i]]$tip.label <- paste('species', 1:nspecies)
+compcommdata <- comparative.comm(SIH_data[["phylo",i]],commdata_matrix)
+for(j in 1:npatches){
+	for(k in 1:nspecies){
+		pptn <- (.aed(compcommdata)[k,j])/pd(commdata_matrix,SIH_data[["phylo",i]])$PD[j]
+		phlgshannon_alpha[j,i][is.na(phlgshannon_alpha[j,i])] <- 0 #checks if NA and replaces with 0
+		shannonindex <- pptn*log(pptn)
+		shannonindex[is.na(shannonindex)] <- 0
+		phlgshannon_alpha[j,i] <- pptn*log(pptn) + phlgshannon_alpha[j,i]
+		generalhillnum[j,i] <- (pptn^a)^(1/(1-a))
+	}
+shannonhillnum[j,i] <- exp(phlgshannon_alpha[j,i])
+}
+#.aed(comparativecommdata) #abundance-weighted evolutionary distinctiveness
+	#if(i == 1){
+		#listofcomms <- comparativecommdata
+	#}
+#listofcomms <- c(listofcomms,comparativecommdata)
 }
 
-#use pez.metrics.aed, I think?
-
-#Phylogenetic Shannon: - sum_i->nspecies ((AEDi/PD)ln(AEDi/PD))
-#Hill's diversity number of order a: (sum_i((AEDi/PD)^a))^(1/(1-a))
-##...I think? I substituted p_i for AEDi/PD as was done in the Shannon formula
 
   
 
