@@ -26,13 +26,35 @@ mntd_beta[i] <- mean(comdistnt(commdata_matrix,interspec_mat,abundance.weighted=
 }
 
 #Hill Number variant
-#Phylogenetic Shannon: - sum_i->nspecies ((AEDi/PD)ln(AEDi/PD))
 #AED = abundance-weighted evolutionary distinctiveness
+
+require(pez)
+#first, need to create a comparative.comm framework
+#comparative.comm(phy, comm, traits = NULL, env = NULL, warn = TRUE,force.root = -1)
+##need only supply comm and phy, nothing else is mandatory
+##comm needs rownames and colnames, is a community data matrix
+###it's telling me that the community data has no sites in common with the rest of the data...not really sure what to do about that ####:((####
+##phy needs a phylogeny (in phylo format)
+commdata_array <- array(data = NA, dim=c(10,7,9))
+
+for(i in 1:length(DispV)){ #go through all of the dispersal levels
+commdata <- SIH_data[["Abund",i]] #extracts the abundance data at dispersal level i from SIHdata
+commdata_array[,,i] <- t(commdata[400,,]) #creates a community data matrix from the community values at the last time step, rows = patches, columns = species - for all dispersal levels
+commdata_matrix = commdata_array[,,i]
+rownames(commdata_matrix) <- paste('patch',1:10)
+colnames(commdata_matrix) <- paste('species', 1:nspecies)
+comparative.comm(SIH_data[["phylo",i]],commdata_matrix)
+}
+
+#use pez.metrics.aed, I think?
+
+#Phylogenetic Shannon: - sum_i->nspecies ((AEDi/PD)ln(AEDi/PD))
+#Hill's diversity number of order a: (sum_i((AEDi/PD)^a))^(1/(1-a))
+##...I think? I substituted p_i for AEDi/PD as was done in the Shannon formula
+
+  
+
+##ignore - applies to ecoPD, not to pez
 #evolutionary distinctiveness(ED) = evol.distinct(type="fair.proportion")
 #evol.distinct(tree, type = c("equal.splits", "fair.proportion"), scale = FALSE, use.branch.lengths = TRUE)
 ##This function will return a vector of evolutionary distinctivenss for every species in the given tree.
-
-beta_MPDabund =NA, beta_MNTDabund=NA
-
-Mean_beta_MPDabund=mean(beta_MPDabund,na.rm=T), SD_beta_MPDabund=sd(beta_MPDabund,na.rm=T), 
-Mean_beta_MNTDabund=mean(beta_MNTDabund,na.rm=T), SD_beta_MNTDabund=sd(beta_MNTDabund,na.rm=T)
