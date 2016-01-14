@@ -61,7 +61,7 @@ uncorr <- matrix(data = c(1,0,0,1), nrow = 2, ncol = 2)
 phylo <- rcoal(nspecies)
 sim.char(phylo,uncorr,nsim = 1, model = "BM", root = 1)
 
-#simulating traits from restricted phylogenies, nope that's no good 
+#simulating traits from restricted phylogenies
 eAMP <- 1
 nspecies <- 7
 ntraits <- 2
@@ -74,3 +74,25 @@ phylo<-as.phylo(hclust(daisy(cbind(eOptimum,eff_values)),method ="ward"))
 uncorr <- matrix(data = c(1,0,0,1), nrow = 2, ncol = 2)	
 model_traitvals[,,i] <- sim.char(phylo,uncorr,nsim = 1, model = "BM", root = 1)
 }
+
+nspecies <- 50
+uncorr <- matrix(data = c(1,0,0,1), nrow = 2, ncol = 2)
+phylo <- rcoal(nspecies)
+plot(phylo)
+traits<-sim.char(phylo,uncorr,nsim = 1, model = "BM", root = 1) #traits is an array, oddly enough
+hist(traits[,2,1])
+traits.stand<-decostand(traits[,1,1],"range") #normalizes the H trait b/w 0 and 1
+traits.stand2<-decostand(traits[,2,1],"standardize")
+traits.stand2_fixed <- ((0.005)*traits.stand2)+0.2
+#traits.stand2_fixed <- ((0.5)*traits.stand2)+0.2 #hard to see if the traits matching well when using 0.005 as the sd
+traitsfinal<-cbind(traits.stand, traits.stand2_fixed)
+#hist(traits.stand[,2],breaks = seq(0,1,length=7))
+
+#plotting the trait values on the phylogeny to track whether they are following it nicely
+par(mfrow=c(1,2))
+for (i in 1:2) {
+  plot(phylo, show.tip.label=FALSE)
+  tiplabels(pch=19, cex=traitsfinal[,i]*(i^i))
+  #tiplabels(pch=19, cex=traits.stand[,i]*2)
+  }
+
