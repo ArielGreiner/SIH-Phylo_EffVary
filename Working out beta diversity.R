@@ -52,11 +52,13 @@ commdata <- SIH_data[["Abund",i]] #extracts the abundance data at dispersal leve
 commdata_array[,,i] <- t(commdata[400,,]) #creates a community data matrix from the community values at the last time step, rows = patches, columns = species - for all dispersal levels
 commdata_matrix = commdata_array[,,i]
 rownames(commdata_matrix) <- paste('patch',1:10)
-colnames(commdata_matrix) <- paste('species', 1:nspecies)
-SIH_data[["phylo",i]]$tip.label <- paste('species', 1:nspecies)
+#colnames(commdata_matrix) <- paste('species', 1:nspecies)
+colnames(commdata_matrix) <- 1:nspecies
+#SIH_data[["phylo",i]]$tip.label <- paste('species', 1:nspecies)
+SIH_data[["phylo",i]]$tip.label <- 1:nspecies
 compcommdata <- comparative.comm(SIH_data[["phylo",i]],commdata_matrix)
 for(j in 1:npatches){
-	for(k in 1:nspecies){
+	for(k in 1:nspecies){ #HAVE TO ADD ABUNDANCE IN b/c it's (AED_i*n_i)/PD
 		pptn <- (.aed(compcommdata)[k,j])/pd(commdata_matrix,SIH_data[["phylo",i]])$PD[j]
 		phlgshannon_alpha[j,i][is.na(phlgshannon_alpha[j,i])] <- 0 #checks if NA and replaces with 0
 		shannonindex <- pptn*log(pptn)
