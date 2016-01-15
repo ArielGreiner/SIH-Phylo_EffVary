@@ -5,7 +5,7 @@ nfunctions<-1
 
 DispV<-c(0.0001,0.0005,0.001,0.005,0.01,0.05,0.1,0.5,1) #the dispersal rates 
 
-Data_storage<-data.frame(SR=NA,Biomass=NA,Biomass_CV=NA,PD=NA,MPD_abund=NA,MPD_pa=NA,MNTD_abund=NA,beta_MPDabund =NA, beta_MNTDabund=NA, sesMPD_abund_z = NA, sesMNTD_abund_z = NA, sesMPD_abund_p = NA, sesMNTD_abund_p = NA,Dispersal=rep(DispV,each=nreplicates),ReplicateNum=factor(1:nreplicates),Scale=rep(c("Local","Regional"),each=length(DispV)*nreplicates)) #building the data frame
+Data_storage<-data.frame(SR=NA,Biomass=NA,Biomass_CV=NA,PD=NA,MPD_abund=NA,MPD_pa=NA,MNTD_abund=NA,beta_MPDabund =NA, beta_MNTDabund=NA, sesMPD_abund_z = NA, sesMNTD_abund_z = NA, sesMPD_abund_p = NA, sesMNTD_abund_p = NA,phylogeven = 0, phylogcluster = 0, Dispersal=rep(DispV,each=nreplicates),ReplicateNum=factor(1:nreplicates),Scale=rep(c("Local","Regional"),each=length(DispV)*nreplicates)) #building the data frame
 
 MTraits<-t(matrix(1,nspecies,nfunctions))
 
@@ -51,6 +51,26 @@ Data_storage$sesMNTD_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$Rep
 
 Data_storage$sesMNTD_abund_p[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]<-mean(ses.mntd(samp = com_data,dis = interspec_mat,null.model = "phylogeny.pool",abundance.weighted = T, runs = 999)$mntd.obs.p)
 
+if(Data_storage$sesMNTD_abund_z > 0 && Data_storage$sesMNTD_abund_p >= 0.95){
+	counter <- Data_storage$phylogeven[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]
+	Data_storage$phylogeven[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"] <- counter + 1	 
+}
+
+if(Data_storage$sesMNTD_abund_z < 0 && Data_storage$sesMNTD_abund_p <= 0.05){
+	counter <- Data_storage$phylogcluster[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]
+	Data_storage$phylogcluster[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"] <- counter + 1	 
+}
+
+if(Data_storage$sesMPD_abund_z > 0 && Data_storage$sesMPD_abund_p >= 0.95){
+	counter <- Data_storage$phylogeven[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]
+	Data_storage$phylogeven[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"] <- counter + 1	 
+}
+
+if(Data_storage$sesMPD_abund_z < 0 && Data_storage$sesMPD_abund_p <= 0.05){
+	counter <- Data_storage$phylogcluster[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]
+	Data_storage$phylogcluster[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"] <- counter + 1	 
+}
+
   #beta measures
   #colnames(com_data) <- paste('species', 1:nspecies)
      #colnames(interspec_mat) <- paste('species', 1:nspecies)
@@ -81,12 +101,32 @@ Data_storage$sesMNTD_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$Rep
 
 Data_storage$sesMNTD_abund_p[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]<-mean(ses.mntd(samp = reg_data,dis = cophenetic(SIH_data[["phylo",i]]),null.model = "phylogeny.pool",abundance.weighted = T, runs = 999)$mntd.obs.p)
 
+if(Data_storage$sesMNTD_abund_z > 0 && Data_storage$sesMNTD_abund_p >= 0.95){
+	counter <- Data_storage$phylogeven[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]
+	Data_storage$phylogeven[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"] <- counter + 1	 
+}
+
+if(Data_storage$sesMNTD_abund_z < 0 && Data_storage$sesMNTD_abund_p <= 0.05){
+	counter <- Data_storage$phylogcluster[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]
+	Data_storage$phylogcluster[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"] <- counter + 1	 
+}
+
+if(Data_storage$sesMPD_abund_z > 0 && Data_storage$sesMPD_abund_p >= 0.95){
+	counter <- Data_storage$phylogeven[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]
+	Data_storage$phylogeven[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"] <- counter + 1	 
+}
+
+if(Data_storage$sesMNTD_abund_z < 0 && Data_storage$sesMNTD_abund_p <= 0.05){
+	counter <- Data_storage$phylogcluster[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]
+	Data_storage$phylogcluster[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"] <- counter + 1	 
+}
+
   }
   }
 require(dplyr) 
 Data_storage_total<-summarise(group_by(Data_storage, Dispersal, Scale), Mean_SR=mean(SR,na.rm=T), SD_SR=sd(SR,na.rm=T), Mean_Biomass=mean(Biomass,na.rm=T), SD_Biomass=sd(Biomass,na.rm=T), Mean_PD=mean(PD,na.rm=T), SD_PD=sd(PD,na.rm=T), Mean_MPD_abund=mean(MPD_abund,na.rm=T), SD_MPD_abund=sd(MPD_abund,na.rm=T), Mean_MPD_pa=mean(MPD_pa,na.rm=T), SD_MPD_pa=sd(MPD_pa,na.rm=T), Mean_MNTD_abund=mean(MNTD_abund,na.rm=T), SD_MNTD_abund=sd(MNTD_abund,na.rm=T),Mean_beta_MPDabund=mean(beta_MPDabund,na.rm=T), SD_beta_MPDabund=sd(beta_MPDabund,na.rm=T), 
 Mean_beta_MNTDabund=mean(beta_MNTDabund,na.rm=T), SD_beta_MNTDabund=sd(beta_MNTDabund,na.rm=T), Mean_sesMPD_abund_z = mean(sesMPD_abund_z,na.rm=T), SD_sesMPD_abund_z = sd(sesMPD_abund_z,na.rm=T),
-Mean_sesMPD_abund_p = mean(sesMPD_abund_p,na.rm=T), SD_sesMPD_abund_p = sd(sesMPD_abund_p,na.rm=T), Mean_sesMNTD_abund_z = mean(sesMNTD_abund_z,na.rm=T), SD_sesMNTD_abund_z = sd(sesMNTD_abund_z,na.rm=T), Mean_sesMNTD_abund_p = mean(sesMNTD_abund_p,na.rm=T), SD_sesMNTD_abund_p = sd(sesMNTD_abund_p,na.rm=T))
+Mean_sesMPD_abund_p = mean(sesMPD_abund_p,na.rm=T), SD_sesMPD_abund_p = sd(sesMPD_abund_p,na.rm=T), Mean_sesMNTD_abund_z = mean(sesMNTD_abund_z,na.rm=T), SD_sesMNTD_abund_z = sd(sesMNTD_abund_z,na.rm=T), Mean_sesMNTD_abund_p = mean(sesMNTD_abund_p,na.rm=T), SD_sesMNTD_abund_p = sd(sesMNTD_abund_p,na.rm=T), phylogeven = phylogeven, phylogcluster = phylogcluster)
 
 ###need to go to an older version of this to get the geom_errobar variant
 #Plot species richness at different dispersal levels 
