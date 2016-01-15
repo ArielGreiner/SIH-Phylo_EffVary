@@ -51,24 +51,28 @@ Data_storage$sesMNTD_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$Rep
 
 Data_storage$sesMNTD_abund_p[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]<-mean(ses.mntd(samp = com_data,dis = interspec_mat,null.model = "phylogeny.pool",abundance.weighted = T, runs = 999)$mntd.obs.p)
 
-if(Data_storage$sesMNTD_abund_z > 0 && Data_storage$sesMNTD_abund_p >= 0.95){
+if(!is.na(Data_storage$sesMNTD_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]) && !is.na(Data_storage$sesMNTD_abund_p[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"])){
+if(Data_storage$sesMNTD_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]) > 0 && Data_storage$sesMNTD_abund_p[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"] >= 0.95){
 	counter <- Data_storage$phylogeven[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]
 	Data_storage$phylogeven[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"] <- counter + 1	 
 }
 
-if(Data_storage$sesMNTD_abund_z < 0 && Data_storage$sesMNTD_abund_p <= 0.05){
+if(Data_storage$sesMNTD_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"] < 0 && Data_storage$sesMNTD_abund_p[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"] <= 0.05){
 	counter <- Data_storage$phylogcluster[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]
 	Data_storage$phylogcluster[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"] <- counter + 1	 
 }
+}
 
-if(Data_storage$sesMPD_abund_z > 0 && Data_storage$sesMPD_abund_p >= 0.95){
+if(!is.na(Data_storage$sesMPD_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]) && !is.na(Data_storage$sesMPD_abund_p[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"])){
+if(Data_storage$sesMPD_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"] > 0 && Data_storage$sesMPD_abund_p[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"] >= 0.95){
 	counter <- Data_storage$phylogeven[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]
 	Data_storage$phylogeven[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"] <- counter + 1	 
 }
 
-if(Data_storage$sesMPD_abund_z < 0 && Data_storage$sesMPD_abund_p <= 0.05){
+if(Data_storage$sesMPD_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"] < 0 && Data_storage$sesMPD_abund_p[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"] <= 0.05){
 	counter <- Data_storage$phylogcluster[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]
 	Data_storage$phylogcluster[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"] <- counter + 1	 
+}
 }
 
   #beta measures
@@ -100,25 +104,29 @@ Data_storage$beta_MNTDabund[Data_storage$Dispersal==DispV[i] & Data_storage$Repl
 Data_storage$sesMNTD_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]<-mean(ses.mntd(samp = reg_data,dis = cophenetic(SIH_data[["phylo",i]]),null.model = "phylogeny.pool",abundance.weighted = T, runs = 999)$mntd.obs.z)
 
 Data_storage$sesMNTD_abund_p[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]<-mean(ses.mntd(samp = reg_data,dis = cophenetic(SIH_data[["phylo",i]]),null.model = "phylogeny.pool",abundance.weighted = T, runs = 999)$mntd.obs.p)
-
-if(Data_storage$sesMNTD_abund_z > 0 && Data_storage$sesMNTD_abund_p >= 0.95){
+if(!is.na(Data_storage$sesMNTD_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]) && !is.na(Data_storage$sesMNTD_abund_p[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"])){
+if(Data_storage$sesMNTD_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"] > 0 && Data_storage$sesMNTD_abund_p[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"] >= 0.95){
 	counter <- Data_storage$phylogeven[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]
 	Data_storage$phylogeven[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"] <- counter + 1	 
 }
 
-if(Data_storage$sesMNTD_abund_z < 0 && Data_storage$sesMNTD_abund_p <= 0.05){
+if(Data_storage$sesMNTD_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"] < 0 && Data_storage$sesMNTD_abund_p[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"] <= 0.05){
 	counter <- Data_storage$phylogcluster[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]
 	Data_storage$phylogcluster[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"] <- counter + 1	 
 }
+	
+}
 
-if(Data_storage$sesMPD_abund_z > 0 && Data_storage$sesMPD_abund_p >= 0.95){
+if(!is.na(Data_storage$sesMPD_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]) && !is.na(Data_storage$sesMPD_abund_p[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"])){
+if(Data_storage$sesMPD_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"] > 0 && Data_storage$sesMPD_abund_p[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"] >= 0.95){
 	counter <- Data_storage$phylogeven[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]
 	Data_storage$phylogeven[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"] <- counter + 1	 
 }
 
-if(Data_storage$sesMNTD_abund_z < 0 && Data_storage$sesMNTD_abund_p <= 0.05){
+if(Data_storage$sesMPD_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"] < 0 && Data_storage$sesMPD_abund_p[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"] <= 0.05){
 	counter <- Data_storage$phylogcluster[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]
 	Data_storage$phylogcluster[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"] <- counter + 1	 
+}
 }
 
   }
