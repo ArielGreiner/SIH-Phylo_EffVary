@@ -5,7 +5,7 @@ nfunctions<-1
 
 DispV<-c(0.0001,0.0005,0.001,0.005,0.01,0.05,0.1,0.5,1) #the dispersal rates 
 
-Data_storage<-data.frame(SR=NA,Biomass=NA,Biomass_CV=NA,PD=NA,MPD_abund=NA,MPD_pa=NA,MNTD_abund=NA,beta_MPDabund =NA, beta_MNTDabund=NA, sesMPD_abund_z = NA, sesMNTD_abund_z = NA, sesMPD_abund_p = NA, sesMNTD_abund_p = NA,phylogeven = 0, phylogcluster = 0, Dispersal=rep(DispV,each=nreplicates),ReplicateNum=factor(1:nreplicates),Scale=rep(c("Local","Regional"),each=length(DispV)*nreplicates)) #building the data frame
+Data_storage<-data.frame(SR=NA,Biomass=NA,Biomass_CV=NA,PD=NA,MPD_abund=NA,MPD_pa=NA,MNTD_abund=NA,beta_MPDabund =NA, beta_MNTDabund=NA, sesMPD_abund_z = NA, sesMNTD_abund_z = NA, sesMPD_abund_p = NA, sesMNTD_abund_p = NA,phylogeven_mpd = 0, phylogeven_mntd = 0, phylogcluster_mpd = 0,phylogcluster_mntd = 0, Dispersal=rep(DispV,each=nreplicates),ReplicateNum=factor(1:nreplicates),Scale=rep(c("Local","Regional"),each=length(DispV)*nreplicates)) #building the data frame
 
 MTraits<-t(matrix(1,nspecies,nfunctions))
 
@@ -55,13 +55,13 @@ sesMNTDabundz <- Data_storage$sesMNTD_abund_z[Data_storage$Dispersal==DispV[i] &
 sesMNTDabundp <- Data_storage$sesMNTD_abund_p[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]
 if(!is.na(sesMNTDabundz) && !is.na(sesMNTDabundp)){
 if(sesMNTDabundz > 0 && sesMNTDabundp >= 0.95){
-	counter <- Data_storage$phylogeven[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]
-	Data_storage$phylogeven[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"] <- counter + 1	 
+	counter <- Data_storage$phylogeven_mntd[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]
+	Data_storage$phylogeven_mntd[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"] <- counter + 1	 
 }
 
 if(sesMNTDabundz < 0 && sesMNTDabundp <= 0.05){
-	counter <- Data_storage$phylogcluster[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]
-	Data_storage$phylogcluster[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"] <- counter + 1	 
+	counter <- Data_storage$phylogcluster_mntd[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]
+	Data_storage$phylogcluster_mntd[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"] <- counter + 1	 
 }
 }
 
@@ -69,13 +69,13 @@ sesMPDabundz <- Data_storage$sesMPD_abund_z[Data_storage$Dispersal==DispV[i] & D
 sesMPDabundp <- Data_storage$sesMPD_abund_p[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]
 if(!is.na(sesMPDabundz) && !is.na(sesMPDabundp)){
 if(sesMPDabundz > 0 && sesMPDabundp >= 0.95){
-	counter <- Data_storage$phylogeven[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]
-	Data_storage$phylogeven[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"] <- counter + 1	 
+	counter <- Data_storage$phylogeven_mpd[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]
+	Data_storage$phylogeven_mpd[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"] <- counter + 1	 
 }
 
 if(sesMPDabundz < 0 && sesMPDabundp <= 0.05){
-	counter <- Data_storage$phylogcluster[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]
-	Data_storage$phylogcluster[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"] <- counter + 1	 
+	counter <- Data_storage$phylogcluster_mpd[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]
+	Data_storage$phylogcluster_mpd[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"] <- counter + 1	 
 }
 }
 
