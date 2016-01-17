@@ -114,13 +114,13 @@ sesMNTDabundp <- Data_storage$sesMNTD_abund_p[Data_storage$Dispersal==DispV[i] &
 
 if(!is.na(sesMNTDabundz) && !is.na(sesMNTDabundp)){
 if(sesMNTDabundz > 0 && sesMNTDabundp >= 0.95){
-	counter <- Data_storage$phylogeven[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]
-	Data_storage$phylogeven[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"] <- counter + 1	 
+	counter <- Data_storage$phylogeven_mntd[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]
+	Data_storage$phylogeven_mntd[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"] <- counter + 1	 
 }
 
 if(sesMNTDabundz < 0 && sesMNTDabundp <= 0.05){
-	counter <- Data_storage$phylogcluster[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]
-	Data_storage$phylogcluster[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"] <- counter + 1	 
+	counter <- Data_storage$phylogcluster_mntd[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]
+	Data_storage$phylogcluster_mntd[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"] <- counter + 1	 
 }
 	
 }
@@ -130,13 +130,13 @@ sesMPDabundp <- Data_storage$sesMPD_abund_p[Data_storage$Dispersal==DispV[i] & D
 
 if(!is.na(sesMPDabundz) && !is.na(sesMPDabundp)){
 if(sesMPDabundz > 0 && sesMPDabundp >= 0.95){
-	counter <- Data_storage$phylogeven[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]
-	Data_storage$phylogeven[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"] <- counter + 1	 
+	counter <- Data_storage$phylogeven_mpd[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]
+	Data_storage$phylogeven_mpd[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"] <- counter + 1	 
 }
 
 if(sesMPDabundz < 0 && sesMPDabundp <= 0.05){
-	counter <- Data_storage$phylogcluster[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]
-	Data_storage$phylogcluster[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"] <- counter + 1	 
+	counter <- Data_storage$phylogcluster_mpd[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]
+	Data_storage$phylogcluster_mpd[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"] <- counter + 1	 
 }
 }
 
