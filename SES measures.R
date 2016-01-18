@@ -37,10 +37,13 @@ theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
 #plotting phylog evenness/clustering stuff with error bars
 
-ggplot(Data_storage_total,aes(x=Dispersal,y=Mean_sesMPD_abund_z,color=factor(sum_phylogeven_mpd),group=Scale))+
+ggplot(Data_storage_total,aes(x=Dispersal,y=Mean_sesMPD_abund_z,color=factor((sum_phylogeven_mpd)/100),group=Scale))+
 geom_point()+ #plots data as points
-geom_errorbar(aes(ymin=Mean_sesMPD_abund_z-SD_sesMPD_abund_z,ymax=Mean_sesMPD_abund_z+SD_sesMPD_abund_z),width=0.1)+
 geom_line()+
+geom_errorbar(aes(ymin=Mean_sesMPD_abund_z-SD_sesMPD_abund_z,ymax=Mean_sesMPD_abund_z+SD_sesMPD_abund_z),width=0.1)+
+scale_x_log10(breaks=DispV)+ 
 facet_grid(Scale~.,scale="free")+
 theme_bw(base_size = 18)+ #gets rid of grey background
 theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+
+
