@@ -1,3 +1,12 @@
+###null models###
+#taxa.labels
+#richness
+#frequency
+#sample.pool
+#phylogeny.pool
+#independentswap
+#trialswap
+
 require(geiger)
 nspecies<-7 #the number of species
 npatches<-10 #the number of patches
@@ -6,7 +15,8 @@ nfunctions<-1
 
 DispV<-c(0.0001,0.0005,0.001,0.005,0.01,0.05,0.1,0.5,1) #the dispersal rates 
 
-Data_storage<-data.frame(MPD_abund=NA,MNTD_abund=NA,sesMPD_abund_z = NA, sesMNTD_abund_z = NA, sesMPD_abund_p = NA, sesMNTD_abund_p = NA, Dispersal=rep(DispV,each=nreplicates),ReplicateNum=factor(1:nreplicates),Scale=rep(c("Local","Regional"),each=length(DispV)*nreplicates)) #building the data frame
+Data_storage<-data.frame(MPD_abund=NA,MNTD_abund=NA,sesMPDpp_abund_z = NA, sesMNTDpp_abund_z = NA, sesMPDtl_abund_z = NA, sesMNTDtl_abund_z = NA, sesMPDr_abund_z = NA, sesMNTDr_abund_z = NA, sesMPDf_abund_z = NA, sesMNTDf_abund_z = NA, sesMPDsp_abund_z = NA, sesMNTDsp_abund_z = NA, sesMPDis_abund_z = NA, sesMNTDis_abund_z = NA, sesMPDts_abund_z = NA, sesMNTDts_abund_z = NA,
+Dispersal=rep(DispV,each=nreplicates),ReplicateNum=factor(1:nreplicates),Scale=rep(c("Local","Regional"),each=length(DispV)*nreplicates)) #building the data frame
 
 MTraits<-t(matrix(1,nspecies,nfunctions))
 fakecom <- matrix(1, ncol = nspecies, nrow = 1)
@@ -34,13 +44,33 @@ for(i in 1:length(DispV)){
   Data_storage$MPD_abund[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]<-mean(mpd(com_data,cophenetic(SIH_data[["phylo",i]]),abundance.weighted = T)) 
   Data_storage$MNTD_abund[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]<-mean(mntd(com_data,cophenetic(SIH_data[["phylo",i]]),abundance.weighted = T))
       
-   Data_storage$sesMPD_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]<-mean(ses.mpd(samp = com_data,dis = interspec_mat,null.model = "phylogeny.pool",abundance.weighted = T, runs = 999)$mpd.obs.z)
+   Data_storage$sesMPDpp_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]<-mean(ses.mpd(samp = com_data,dis = interspec_mat,null.model = "phylogeny.pool",abundance.weighted = T, runs = 999)$mpd.obs.z)
 
-Data_storage$sesMPD_abund_p[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]<-mean(ses.mpd(samp = com_data,dis = interspec_mat,null.model = "phylogeny.pool",abundance.weighted = T, runs = 999)$mpd.obs.p)
+Data_storage$sesMNTDpp_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]<-mean(ses.mntd(samp = com_data,dis = interspec_mat,null.model = "phylogeny.pool",abundance.weighted = T, runs = 999)$mntd.obs.z)
 
-Data_storage$sesMNTD_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]<-mean(ses.mntd(samp = com_data,dis = interspec_mat,null.model = "phylogeny.pool",abundance.weighted = T, runs = 999)$mntd.obs.z)
+Data_storage$sesMPDtl_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]<-mean(ses.mpd(samp = com_data,dis = interspec_mat,null.model = "taxa.labels",abundance.weighted = T, runs = 999)$mpd.obs.z)
 
-Data_storage$sesMNTD_abund_p[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]<-mean(ses.mntd(samp = com_data,dis = interspec_mat,null.model = "phylogeny.pool",abundance.weighted = T, runs = 999)$mntd.obs.p)
+Data_storage$sesMNTDtl_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]<-mean(ses.mntd(samp = com_data,dis = interspec_mat,null.model = "taxa.labels",abundance.weighted = T, runs = 999)$mntd.obs.z)
+
+Data_storage$sesMPDr_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]<-mean(ses.mpd(samp = com_data,dis = interspec_mat,null.model = "richness",abundance.weighted = T, runs = 999)$mpd.obs.z)
+
+Data_storage$sesMNTDr_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]<-mean(ses.mntd(samp = com_data,dis = interspec_mat,null.model = "richness",abundance.weighted = T, runs = 999)$mntd.obs.z)
+
+Data_storage$sesMPDf_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]<-mean(ses.mpd(samp = com_data,dis = interspec_mat,null.model = "frequency",abundance.weighted = T, runs = 999)$mpd.obs.z)
+
+Data_storage$sesMNTDf_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]<-mean(ses.mntd(samp = com_data,dis = interspec_mat,null.model = "frequency",abundance.weighted = T, runs = 999)$mntd.obs.z)
+
+Data_storage$sesMPDsp_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]<-mean(ses.mpd(samp = com_data,dis = interspec_mat,null.model = "sample.pool",abundance.weighted = T, runs = 999)$mpd.obs.z)
+
+Data_storage$sesMNTDsp_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]<-mean(ses.mntd(samp = com_data,dis = interspec_mat,null.model = "sample.pool",abundance.weighted = T, runs = 999)$mntd.obs.z)
+
+Data_storage$sesMPDis_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]<-mean(ses.mpd(samp = com_data,dis = interspec_mat,null.model = "independentswap",abundance.weighted = T, runs = 999)$mpd.obs.z)
+
+Data_storage$sesMNTDis_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]<-mean(ses.mntd(samp = com_data,dis = interspec_mat,null.model = "independentswap",abundance.weighted = T, runs = 999)$mntd.obs.z)
+
+Data_storage$sesMPDts_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]<-mean(ses.mpd(samp = com_data,dis = interspec_mat,null.model = "trialswap",abundance.weighted = T, runs = 999)$mpd.obs.z)
+
+Data_storage$sesMNTDts_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Local"]<-mean(ses.mntd(samp = com_data,dis = interspec_mat,null.model = "trialswap",abundance.weighted = T, runs = 999)$mntd.obs.z)
 
   #At the regional scale
   com_data<-matrix(colSums(t(SIH_data[["Abund",i]][400,,])),1,nspecies)
@@ -53,28 +83,41 @@ Data_storage$sesMNTD_abund_p[Data_storage$Dispersal==DispV[i] & Data_storage$Rep
     #SES measures, taking the mean of the 3 seems more legit than just choosing the first? even though they all represent the exact same thing and were constructed from the same deterministic information
   reg_data<-matrix(rep(colSums(t(SIH_data[["Abund",i]][400,,])),each=3),3,nspecies)
   colnames(reg_data)<-1:nspecies
-  Data_storage$sesMPD_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]<-mean(ses.mpd(samp = reg_data,dis = cophenetic(SIH_data[["phylo",i]]),null.model = "phylogeny.pool",abundance.weighted = T, runs = 999)$mpd.obs.z)
   
-    Data_storage$sesMPD_abund_p[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]<-mean(ses.mpd(samp = reg_data,dis = cophenetic(SIH_data[["phylo",i]]),null.model = "phylogeny.pool",abundance.weighted = T, runs = 999)$mpd.obs.p)
+   Data_storage$sesMPDpp_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]<-mean(ses.mpd(samp = reg_data,dis = interspec_mat,null.model = "phylogeny.pool",abundance.weighted = T, runs = 999)$mpd.obs.z)
 
-Data_storage$sesMNTD_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]<-mean(ses.mntd(samp = reg_data,dis = cophenetic(SIH_data[["phylo",i]]),null.model = "phylogeny.pool",abundance.weighted = T, runs = 999)$mntd.obs.z)
+Data_storage$sesMNTDpp_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]<-mean(ses.mntd(samp = reg_data,dis = interspec_mat,null.model = "phylogeny.pool",abundance.weighted = T, runs = 999)$mntd.obs.z)
 
-Data_storage$sesMNTD_abund_p[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]<-mean(ses.mntd(samp = reg_data,dis = cophenetic(SIH_data[["phylo",i]]),null.model = "phylogeny.pool",abundance.weighted = T, runs = 999)$mntd.obs.p)	
+Data_storage$sesMPDtl_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]<-mean(ses.mpd(samp = reg_data,dis = interspec_mat,null.model = "taxa.labels",abundance.weighted = T, runs = 999)$mpd.obs.z)
+
+Data_storage$sesMNTDtl_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]<-mean(ses.mntd(samp = reg_data,dis = interspec_mat,null.model = "taxa.labels",abundance.weighted = T, runs = 999)$mntd.obs.z)
+
+Data_storage$sesMPDr_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]<-mean(ses.mpd(samp = reg_data,dis = interspec_mat,null.model = "richness",abundance.weighted = T, runs = 999)$mpd.obs.z)
+
+Data_storage$sesMNTDr_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]<-mean(ses.mntd(samp = reg_data,dis = interspec_mat,null.model = "richness",abundance.weighted = T, runs = 999)$mntd.obs.z)
+
+Data_storage$sesMPDf_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]<-mean(ses.mpd(samp = reg_data,dis = interspec_mat,null.model = "frequency",abundance.weighted = T, runs = 999)$mpd.obs.z)
+
+Data_storage$sesMNTDf_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]<-mean(ses.mntd(samp = reg_data,dis = interspec_mat,null.model = "frequency",abundance.weighted = T, runs = 999)$mntd.obs.z)
+
+Data_storage$sesMPDsp_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]<-mean(ses.mpd(samp = reg_data,dis = interspec_mat,null.model = "sample.pool",abundance.weighted = T, runs = 999)$mpd.obs.z)
+
+Data_storage$sesMNTDsp_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]<-mean(ses.mntd(samp = reg_data,dis = interspec_mat,null.model = "sample.pool",abundance.weighted = T, runs = 999)$mntd.obs.z)
+
+Data_storage$sesMPDis_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]<-mean(ses.mpd(samp = reg_data,dis = interspec_mat,null.model = "independentswap",abundance.weighted = T, runs = 999)$mpd.obs.z)
+
+Data_storage$sesMNTDis_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]<-mean(ses.mntd(samp = reg_data,dis = interspec_mat,null.model = "independentswap",abundance.weighted = T, runs = 999)$mntd.obs.z)
+
+Data_storage$sesMPDts_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]<-mean(ses.mpd(samp = reg_data,dis = interspec_mat,null.model = "trialswap",abundance.weighted = T, runs = 999)$mpd.obs.z)
+
+Data_storage$sesMNTDts_abund_z[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]<-mean(ses.mntd(samp = reg_data,dis = interspec_mat,null.model = "trialswap",abundance.weighted = T, runs = 999)$mntd.obs.z)
+
  
-#storing the phylogenies and their mpd and mntd values, ignoring the real community
 
-placeholder = cophenetic(SIH_data[["phylo",i]])
-colnames(placeholder)<-1:nspecies
-rownames(placeholder)<-1:nspecies
-
-mpdphylo[i,j] = mpd(fakecom,placeholder, abundance.weighted = F) #not exactly regional mpd_pa because in this world, no effect of a species going extinct
-Data_storage$phyloMPD[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"] <- mpdphylo[i,j]
-mntdphylo[i,j] = mntd(fakecom,placeholder, abundance.weighted = F) #this should just be regional mntd_pa
-Data_storage$phyloMNTD[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"] <- mpdphylo[i,j]
-phlgs[,,j,i] <- placeholder 
- #Data_storage$phlg_mat[Data_storage$Dispersal==DispV[i] & Data_storage$ReplicateNum==j & Data_storage$Scale == "Regional"]<-phlgs[,,j,i] doesn't work
-   
   }
   }
+  
+
+
   
 
