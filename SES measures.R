@@ -26,6 +26,23 @@ ggplot(Data_storage_total,aes(x=Dispersal,y=Mean_sesMPD_abund_z,color=Scale,grou
   theme_bw(base_size = 18)+ #gets rid of grey background
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) #removes grid lines
   
+#sesMPDabund vs. MPDabund
+ggplot(Data_storage_total,aes(x=Mean_MPD_abund,y=Mean_sesMPD_abund_z,color=Scale,group=Scale,fill=Scale,alpha=0.1))+
+  geom_line(size=2)+ #plots data as lines
+  geom_ribbon(aes(ymin=Mean_sesMPD_abund_z-SD_sesMPD_abund_z,ymax=Mean_sesMPD_abund_z+SD_sesMPD_abund_z),width=0.1)+
+  scale_x_log10(breaks=DispV)+ #sets x axis to log10 scale
+  theme_bw(base_size = 18)+ #gets rid of grey background
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) #removes grid lines
+  
+#same graph as above, just in a more useless form?  
+ggplot(Data_storage_total,aes(x=Mean_MPD_abund,y=Mean_sesMPD_abund_z,color=factor(Dispersal),group=Scale))+
+geom_point()+ #plots data as points
+geom_path()+
+geom_errorbar(aes(ymin=Mean_sesMPD_abund_z-SD_sesMPD_abund_z,ymax=Mean_sesMPD_abund_z+SD_sesMPD_abund_z),width=0.1)+
+facet_grid(Scale~.,scale="free")+
+theme_bw(base_size = 18)+ #gets rid of grey background
+theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+
  #plotting phylog evenness/clustering stuff, proportions this time
 ggplot(Data_storage_total,aes(x=Dispersal,y=Mean_sesMPD_abund_z,color=factor((sum_phylogeven_mpd)/100),group=Scale))+
 geom_point()+ #plots data as points
