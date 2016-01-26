@@ -75,10 +75,26 @@ shannonhillnum[j,i] <- exp(phlgshannon_alpha[j,i])
 #listofcomms <- c(listofcomms,comparativecommdata)
 }
 
-
-  
-
 ##ignore - applies to ecoPD, not to pez
 #evolutionary distinctiveness(ED) = evol.distinct(type="fair.proportion")
 #evol.distinct(tree, type = c("equal.splits", "fair.proportion"), scale = FALSE, use.branch.lengths = TRUE)
 ##This function will return a vector of evolutionary distinctivenss for every species in the given tree.
+
+
+#'raw' beta diversity
+shan_alpha_hillnum <- matrix(data = rep(0,npatches*length(DispV)), nrow = npatches, ncol = length(DispV))
+shannon_alpha <- matrix(data = rep(0,npatches*length(DispV)), nrow = npatches, ncol = length(DispV))
+shannon_gamma <- rep(0, length = nspecies)
+for(k in 1:npatches){
+	for(m in 1:nspecies){
+		relabund <- com_data[k,m]/sum(com_data[k,])
+		shannon_alpha[k,i][is.na(shannon_alpha[k,i])] <- 0 #checks if NA and replaces with 0
+		shannon_alpha[k,i] <- relabund*log(relabund) + shannon_alpha[k,i]
+		gammaabund <- sum(com_data[,m])/sum(com_data)
+		shannon_gamma[i][is.na(shannon_gamma[i])] <- 0
+		shannon_gamma[i] <- gammaabund*log(gammaabund) + shannon_gamma[i]
+	}
+	shan_alpha_hillnum[k,i] <- exp(shannon_alpha[k,i])
+	
+}
+shan_gamma_hillnum[i] <- exp(shannon_gamma[i])
